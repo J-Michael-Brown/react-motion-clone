@@ -1,19 +1,34 @@
 import React from 'react';
-import Header from './Header';
-import TicketList from './TicketList';
 import { Switch, Route } from 'react-router-dom';
-import NewTicketForm from './NewTicketForm';
+import { LetterList } from './LetterList';
+import TypeInput from './TypeInput';
 
-function App(){
-  return (
-    <div>
-      <Header/>
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      masterLetterList: []
+    };
+    this.handleToggleLetterInList = this.handleToggleLetterInList.bind(this);
+  }
+
+  handleToggleLetterInList(newLetter){
+    var newMasterLetterList = this.state.masterLetterList.slice();
+    newMasterLetterList.push(newLetter);
+    this.setState({masterLetterList: newMasterLetterList});
+  }
+
+  render() {
+    return (
+      <div>
       <Switch>
-        <Route exact path='/' component={TicketList} />
-        <Route path='/newticket' component={NewTicketForm} />
+      <Route exact path='/' render={() => <LetterList onNewKeyPress={this.state.handleToggleLetterInList}/>}/>
       </Switch>
-    </div>
-  );
+      <TypeInput/>
+      </div>
+    );
+  }
 }
 
 export default App;
